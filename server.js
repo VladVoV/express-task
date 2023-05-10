@@ -1,18 +1,15 @@
 const express = require('express')
-const bodyParser = require('body-parser')
-
 const app = express()
 const port = 3000
 
-app.use(bodyParser.json())
+app.use(express.json())
 
 app.use(function (err, req, res, next) {
     console.error(err.stack)
     res.status(500).send('Something broke!')
 })
 
-let books = [
-    { id: 1, title: "Harry Potter and the Philosopher's Stone", reviews: [{ id: 1, comment: "Nice" }, { id: 2, comment: "The best book ever" }] },
+let books = [    { id: 1, title: "Harry Potter and the Philosopher's Stone", reviews: [{ id: 1, comment: "Nice" }, { id: 2, comment: "The best book ever" }] },
     { id: 2, title: "The Lord of the Rings", reviews: [] }
 ]
 
@@ -87,7 +84,7 @@ app.post('/books/:bookId/reviews', validateBookExists, (req, res) => {
 
 app.delete('/books/:bookId/reviews/:reviewId', validateBookExists, validateReviewExists, (req, res) => {
     const { review } = req
-    const reviewIndex =req.book.reviews.indexOf(review)
+    const reviewIndex = req.book.reviews.indexOf(review)
     req.book.reviews.splice(reviewIndex, 1)
     res.sendStatus(204)
 })
@@ -98,4 +95,4 @@ app.get('/books/:bookId/reviews', validateBookExists, (req, res) => {
 
 app.listen(port, () => {
     console.log(`Book API listening at http://localhost:${port}`)
-        })
+})
